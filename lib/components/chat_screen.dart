@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:windbolt/components/ui/custom_app_bar.dart';
 import 'package:windbolt/components/ui/custom_drawer.dart';
 import 'package:windbolt/controllers/chat_controller.dart';
@@ -67,7 +68,7 @@ class ChatScreenState extends State<ChatScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Text('${msg.timestamp.hour.toString()}:${msg.timestamp.minute.toString()}', style: const TextStyle(fontSize: 10)),
+                            child: Text(DateFormat.Hm().format(msg.timestamp), style: const TextStyle(fontSize: 10)),
                           ),
                         ],
                       ),
