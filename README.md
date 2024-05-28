@@ -1,16 +1,15 @@
-# fgchat
+# WindBolt
 
-A new Flutter project.
+A Flutter Group Chat Project
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+WindBolt is a free group chat app project
 
-A few resources to get you started if this is your first Flutter project:
+- **Create chats with yourself, a friend or a group of whatever size you want.**
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Create multiple chats with the same person**, if you want separate chats with the same person for different contexts, you may create as many as you need, as each chat have a **customisable name and picture**.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Stack
+
+WindBolt uses **[Dart](https://dart.dev/)/[Flutter](https://flutter.dev/)** mobile technology combined with **[Rust](https://www.rust-lang.org/pt-BR)** and **[Postgres](https://www.postgresql.org/)** for the backend

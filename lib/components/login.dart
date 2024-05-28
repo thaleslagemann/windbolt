@@ -1,6 +1,7 @@
-import 'package:fgchat/components/home.dart';
-import 'package:fgchat/controllers/login_controller.dart';
+import 'package:windbolt/components/home.dart';
+import 'package:windbolt/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -35,13 +36,38 @@ class LoginState extends State<Login> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "FGCHAT",
-              style: TextStyle(
-                letterSpacing: 5,
-                fontSize: 40,
-                fontWeight: FontWeight.w900,
-                color: Color.fromARGB(255, 61, 131, 236),
+            const SizedBox(
+              width: 250,
+              height: 80,
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    child: Text(
+                      "WindBolt",
+                      style: TextStyle(
+                        fontFamily: 'Caveat',
+                        fontSize: 70,
+                        fontWeight: FontWeight.w300,
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 1,
+                    child: Text(
+                      "WindBolt",
+                      style: TextStyle(
+                        fontFamily: 'Caveat',
+                        fontSize: 70,
+                        fontWeight: FontWeight.w300,
+                        color: Color.fromARGB(255, 61, 131, 236),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(

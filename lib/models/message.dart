@@ -1,8 +1,8 @@
 class Message {
   int senderId;
-  int receiverId;
+  int? receiverId;
   String content;
   DateTime timestamp;
 
-  Message({required this.senderId, required this.receiverId, required this.content, required this.timestamp});
+  Message({required this.senderId, this.receiverId, required this.content, required this.timestamp});
 }

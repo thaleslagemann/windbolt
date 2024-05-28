@@ -1,8 +1,8 @@
-import 'package:fgchat/components/chat_screen.dart';
-import 'package:fgchat/components/ui/custom_drawer.dart';
-import 'package:fgchat/components/ui/drawer_list_tile.dart';
-import 'package:fgchat/models/chat.dart';
-import 'package:fgchat/models/user.dart';
+import 'package:windbolt/components/chat_screen.dart';
+import 'package:windbolt/components/ui/custom_drawer.dart';
+import 'package:windbolt/components/ui/drawer_list_tile.dart';
+import 'package:windbolt/models/chat.dart';
+import 'package:windbolt/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -49,49 +49,54 @@ class HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      endDrawer: const CustomDrawer(),
-      body: Stack(
-        children: [
-          chatList.isEmpty
-              ? const Center(
-                  child: Text("Welcome"),
-                )
-              : ListView.builder(
-                  itemCount: chatList.length,
-                  itemBuilder: (context, value) {
-                    return DrawerListTile(
-                      title: chatList[value].title!,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatScreen(
-                              chat: chatList[value],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }),
-          Positioned(
-            bottom: 0,
-            right: 3,
-            child: Container(
-              height: 60,
-              width: 60,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
+    return !mounted
+        ? CircularProgressIndicator()
+        : Scaffold(
+            endDrawer: const CustomDrawer(),
+            body: Stack(
+              children: [
+                chatList.isEmpty
+                    ? const Center(
+                        child: Text("Welcome"),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 15.0),
+                        child: ListView.builder(
+                            itemCount: chatList.length,
+                            itemBuilder: (context, value) {
+                              return DrawerListTile(
+                                title: chatList[value].title!,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChatScreen(
+                                        chat: chatList[value],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }),
+                      ),
+                Positioned(
+                  bottom: 0,
+                  right: 3,
+                  child: Container(
+                    height: 60,
+                    width: 60,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15),
+                      ),
+                      color: Colors.black,
+                    ),
+                    child: IconButton(icon: const Icon(Icons.menu), onPressed: _openMenuBottomSheet),
+                  ),
                 ),
-                color: Colors.black,
-              ),
-              child: IconButton(icon: const Icon(Icons.menu), onPressed: _openMenuBottomSheet),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 }

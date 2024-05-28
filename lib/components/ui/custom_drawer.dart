@@ -1,4 +1,4 @@
-import 'package:fgchat/components/ui/drawer_list_tile.dart';
+import 'package:windbolt/components/ui/drawer_list_tile.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {

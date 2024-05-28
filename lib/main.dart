@@ -1,5 +1,6 @@
-import 'package:fgchat/components/login.dart';
+import 'package:windbolt/components/login.dart';
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'WindBolt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 61, 131, 236), brightness: Brightness.dark),
         useMaterial3: true,

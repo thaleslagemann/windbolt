@@ -1,4 +1,4 @@
-import 'package:fgchat/models/message.dart';
+import 'package:windbolt/models/message.dart';
 
 class Chat {
   Chat({required this.type, this.title, required this.userIds, required this.messages}) : assert(userIds.isNotEmpty, 'Must have at least one id');

@@ -1,4 +1,5 @@
-import 'package:fgchat/models/user.dart';
+import 'package:windbolt/models/user.dart';
+import 'package:windbolt/globals.dart' as globals;
 
 class LoginController {
   User? user;
@@ -8,6 +9,8 @@ class LoginController {
     if (user == 'teste' && pass == '1234') {
       this.user = User(id: 1, name: "thales");
       isLoggedIn = true;
+      globals.isLoggedIn = true;
+      globals.user = User(id: 1, name: "thales");
     }
   }
 }

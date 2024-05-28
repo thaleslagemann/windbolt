@@ -1,4 +1,4 @@
-name: fgchat
+name: windbolt
 description: "A group chat Flutter project."
 
 publish_to: 'none'
@@ -22,3 +22,15 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: Caveat
+      fonts:
+        - asset: assets/fonts/Caveat/static/Caveat-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/Caveat/static/Caveat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Caveat/static/Caveat-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/Caveat/static/Caveat-Bold.ttf
+          weight: 600
