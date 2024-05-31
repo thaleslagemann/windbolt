@@ -29,6 +29,7 @@ class ChatScreenState extends State<ChatScreen> {
     );
     setState(() {
       controller.send(messageAux);
+      _messageController.clear();
     });
   }
 

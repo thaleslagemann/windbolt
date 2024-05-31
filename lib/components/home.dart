@@ -1,4 +1,5 @@
 import 'package:windbolt/components/chat_screen.dart';
+import 'package:windbolt/components/ui/custom_app_bar.dart';
 import 'package:windbolt/components/ui/custom_drawer.dart';
 import 'package:windbolt/components/ui/drawer_list_tile.dart';
 import 'package:windbolt/models/chat.dart';
@@ -50,9 +51,17 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return !mounted
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Scaffold(
             endDrawer: const CustomDrawer(),
+            appBar: const CustomAppBar(
+              title: "My Chats",
+              leading: Icon(
+                Icons.chat_sharp,
+                size: 24,
+              ),
+              actions: [],
+            ),
             body: Stack(
               children: [
                 chatList.isEmpty
