@@ -1,7 +1,7 @@
 import 'package:windbolt/components/home.dart';
+import 'package:windbolt/components/ui/custom_text.dart';
 import 'package:windbolt/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -15,17 +15,21 @@ class LoginState extends State<Login> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  _login(String username, String password) {
+  bool _login(String username, String password) {
     print("tentou logar");
-    controller.login(username, password);
-    if (controller.isLoggedIn && controller.user != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Home(user: controller.user),
-        ),
-      );
+    bool logou = controller.login(username, password);
+    if (logou) {
+      if (controller.isLoggedIn && controller.user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(user: controller.user),
+          ),
+        );
+        return true;
+      }
     }
+    return false;
   }
 
   @override
@@ -36,13 +40,13 @@ class LoginState extends State<Login> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
+            SizedBox(
               width: 250,
               height: 80,
               child: Stack(
                 children: [
                   Positioned(
-                    bottom: 0,
+                    top: 0,
                     left: 0,
                     child: Text(
                       "WindBolt",
@@ -50,20 +54,20 @@ class LoginState extends State<Login> {
                         fontFamily: 'Caveat',
                         fontSize: 70,
                         fontWeight: FontWeight.w300,
-                        color: Color.fromARGB(255, 255, 255, 255),
+                        color: Colors.lightGreen[100],
                       ),
                     ),
                   ),
                   Positioned(
-                    bottom: 0,
-                    left: 1,
+                    top: 0,
+                    left: 1.5,
                     child: Text(
                       "WindBolt",
                       style: TextStyle(
                         fontFamily: 'Caveat',
                         fontSize: 70,
                         fontWeight: FontWeight.w300,
-                        color: Color.fromARGB(255, 61, 131, 236),
+                        color: Colors.lightGreen[400],
                       ),
                     ),
                   ),
@@ -75,26 +79,60 @@ class LoginState extends State<Login> {
             ),
             TextFormField(
               controller: usernameController,
-              decoration: const InputDecoration(hintText: "username"),
+              decoration: InputDecoration(hintText: "username", focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.lightGreen[300]!))),
             ),
             TextFormField(
               controller: passwordController,
-              decoration: const InputDecoration(hintText: "password"),
+              decoration: InputDecoration(hintText: "password", focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.lightGreen[300]!))),
               obscureText: true,
             ),
             const SizedBox(
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () => _login(
-                usernameController.text.trim(),
-                passwordController.text.trim(),
-              ),
+              onPressed: () {
+                bool logou = _login(usernameController.text.trim(), passwordController.text.trim());
+                if (logou) {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Row(
+                        children: [
+                          const CustomText(
+                            "Logged in as ",
+                            textColor: Colors.black,
+                          ),
+                          CustomText(
+                            "${controller.user?.name}",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.lightGreen[400],
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const CustomText("Login failed"),
+                      backgroundColor: Colors.red[300],
+                    ),
+                  );
+                }
+              },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
-                backgroundColor: const Color.fromARGB(255, 61, 131, 236),
+                backgroundColor: Colors.lightGreen[400],
               ),
-              child: const Text("Login"),
+              child: const CustomText(
+                "Login",
+                textColor: Colors.black,
+              ),
             ),
           ],
         ),

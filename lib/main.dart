@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'WindBolt',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 61, 131, 236), brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen, brightness: Brightness.dark),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.lightGreen[300],
+          selectionColor: Colors.lightGreen[300],
+          selectionHandleColor: Colors.transparent,
+        ),
         useMaterial3: true,
       ),
       home: const Login(),
