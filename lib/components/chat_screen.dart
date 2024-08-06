@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:windbolt/components/ui/custom_app_bar.dart';
 import 'package:windbolt/components/ui/custom_drawer.dart';
@@ -30,8 +28,8 @@ class ChatScreenState extends State<ChatScreen> {
 
   _sendMessage(String messageBody) {
     Message messageAux = Message(
-      senderId: 1,
-      receiverIds: controller.chat.userIds.length > 1 ? controller.chat.userIds : null,
+      senderUuid: globals.user!.uuid,
+      receiverUuids: controller.chat.userUuids.length > 1 ? controller.chat.userUuids : null,
       content: messageBody,
       timestamp: DateTime.now(),
     );
@@ -71,31 +69,6 @@ class ChatScreenState extends State<ChatScreen> {
     _scrollController.removeListener(_scrollListener);
     _scrollController.dispose();
     super.dispose();
-  }
-
-  _clickMsg(Message msg) {
-    Message? msgAux = widget.chat.messages.where((element) => element.timestamp == msg.timestamp).firstOrNull;
-    if (msgAux != null) {
-      if (msgAux.received == true && msgAux.isVisualized == true) {
-        setState(() {
-          msgAux.setReceived = false;
-          msgAux.setVisualized = false;
-        });
-        return;
-      }
-      if (msgAux.received == true && msgAux.isVisualized == false) {
-        setState(() {
-          msgAux.setVisualized = true;
-        });
-        return;
-      }
-      if (msgAux.received == false && msgAux.isVisualized == false) {
-        setState(() {
-          msgAux.setReceived = true;
-        });
-        return;
-      }
-    }
   }
 
   @override
@@ -177,21 +150,18 @@ class ChatScreenState extends State<ChatScreen> {
                       ),
                       for (Message msg in widget.chat.messages)
                         Align(
-                          alignment: msg.senderId == globals.user!.id ? Alignment.centerRight : Alignment.centerLeft,
+                          alignment: msg.senderUuid == globals.user!.uuid ? Alignment.centerRight : Alignment.centerLeft,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                             child: Column(
-                              crossAxisAlignment: msg.senderId == globals.user!.id ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                              crossAxisAlignment: msg.senderUuid == globals.user!.uuid ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                               children: [
-                                GestureDetector(
-                                  onTap: () => _clickMsg(msg),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.white, width: 2),
-                                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10))),
-                                    child: Text(msg.content),
-                                  ),
+                                Container(
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 2),
+                                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(10))),
+                                  child: Text(msg.content),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,

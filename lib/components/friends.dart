@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:windbolt/components/ui/custom_app_bar.dart';
 import 'package:windbolt/components/ui/custom_drawer.dart';
 import 'package:windbolt/components/ui/custom_list_tile.dart';
@@ -17,7 +16,6 @@ class Friends extends StatefulWidget {
 }
 
 class _FriendsState extends State<Friends> {
-  NumberFormat formatter = NumberFormat("0000");
   List<User> filteredList = globals.users;
   TextEditingController addSearchController = TextEditingController();
 
@@ -51,23 +49,23 @@ class _FriendsState extends State<Friends> {
           Expanded(
             child: ListView(
               children: [
-                for (User user in globals.users.where((gu) => globals.user!.isFriendsWith(gu.id)))
+                for (User user in globals.users.where((gu) => globals.user!.isFriendsWith(gu.uuid)))
                   if (user != globals.user)
                     CustomListTile(
                       title: user.name,
-                      subtitle: "#${formatter.format(user.id)}",
+                      subtitle: "#${user.tag}",
                       leadingIcon: Icon(
                         Icons.handshake,
                         color: Colors.lightGreen[300],
                       ),
                       isIconButton: true,
                       onIconButtonPress: () {
-                        globals.user!.isFriendsWith(user.id)
+                        globals.user!.isFriendsWith(user.uuid)
                             ? setState(() {
-                                globals.user!.removeFriend(user.id);
+                                globals.user!.removeFriend(user.uuid);
                               })
                             : setState(() {
-                                globals.user!.addFriend(user.id);
+                                globals.user!.addFriend(user.uuid);
                               });
                       },
                     )
@@ -81,16 +79,11 @@ class _FriendsState extends State<Friends> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 0.5),
-                borderRadius: BorderRadius.circular(5),
-              ),
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               child: TextFormField(
                 controller: addSearchController,
-                decoration: const InputDecoration.collapsed(
-                  hintText: 'Search for name and #tag',
-                ),
+                decoration:
+                    const InputDecoration(label: CustomText('Search for name and #tag'), border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)))),
                 onChanged: (value) => _onSearchChanged(addSearchController.text),
               ),
             ),
@@ -98,20 +91,20 @@ class _FriendsState extends State<Friends> {
           Expanded(
             child: ListView(
               children: [
-                for (User user in filteredList.where((gu) => !globals.user!.isFriendsWith(gu.id)))
+                for (User user in filteredList.where((gu) => !globals.user!.isFriendsWith(gu.uuid)))
                   if (user != globals.user)
                     CustomListTile(
                       title: user.name,
-                      subtitle: "#${formatter.format(user.id)}",
+                      subtitle: "#${user.tag}",
                       leadingIcon: const Icon(Icons.front_hand),
                       isIconButton: true,
                       onIconButtonPress: () {
-                        globals.user!.isFriendsWith(user.id)
+                        globals.user!.isFriendsWith(user.uuid)
                             ? setState(() {
-                                globals.user!.removeFriend(user.id);
+                                globals.user!.removeFriend(user.uuid);
                               })
                             : setState(() {
-                                globals.user!.addFriend(user.id);
+                                globals.user!.addFriend(user.uuid);
                               });
                       },
                     )
@@ -151,8 +144,8 @@ class _FriendsState extends State<Friends> {
     }
     List<User> list = [];
 
-    for (User user in globals.users.where((user) => !globals.user!.isFriendsWith(user.id))) {
-      if ((user.name.contains(finalName)) || (finalTag != null ? "#${formatter.format(user.id)}".contains(finalTag) : false)) {
+    for (User user in globals.users.where((user) => !globals.user!.isFriendsWith(user.uuid))) {
+      if ((user.name.contains(finalName)) || (finalTag != null ? "#${user.tag}".contains(finalTag) : false)) {
         list.add(user);
       }
     }

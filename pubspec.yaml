@@ -17,6 +17,9 @@ dependencies:
   crypto: ^3.0.3
   carbon_icons: ^0.0.1+2
   material_symbols_icons: ^4.2758.0
+  sqflite: ^2.3.3+1
+  uuid: ^3.0.5
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

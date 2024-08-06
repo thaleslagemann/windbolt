@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomListTile extends StatelessWidget {
@@ -10,6 +11,8 @@ class CustomListTile extends StatelessWidget {
     this.subtitleTextStyle,
     this.textColor,
     this.tileColor,
+    this.decoration,
+    this.inkWellBorderRadius,
     this.splashColor,
     this.leadingIcon,
     this.trailingIcon,
@@ -24,6 +27,8 @@ class CustomListTile extends StatelessWidget {
   final String? subtitle;
   final TextStyle? titleTextStyle;
   final TextStyle? subtitleTextStyle;
+  final BoxDecoration? decoration;
+  final BorderRadius? inkWellBorderRadius;
   final Icon? leadingIcon;
   final Icon? trailingIcon;
   final bool isIconButton;
@@ -36,50 +41,54 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: splashColor ?? Colors.lightGreen[200]?.withAlpha(100),
-      splashFactory: InkRipple.splashFactory,
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: ListTile(
-        dense: dense,
-        leading: leadingIcon != null
-            ? isIconButton
-                ? IconButton(
-                    onPressed: onIconButtonPress,
-                    icon: leadingIcon!,
-                    visualDensity: dense ? VisualDensity.compact : VisualDensity.standard,
-                  )
-                : leadingIcon
-            : null,
-        trailing: trailingIcon,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            Text(title),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              subtitle ?? "",
-              style: subtitleTextStyle ??
-                  const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w200,
-                    color: Colors.white54,
-                  ),
-            ),
-          ],
+    return Container(
+      decoration: decoration,
+      child: InkWell(
+        splashColor: splashColor ?? Colors.lightGreen[200]?.withAlpha(100),
+        splashFactory: InkRipple.splashFactory,
+        onTap: onTap,
+        borderRadius: inkWellBorderRadius,
+        onLongPress: onLongPress,
+        child: ListTile(
+          dense: dense,
+          leading: leadingIcon != null
+              ? isIconButton
+                  ? IconButton(
+                      onPressed: onIconButtonPress,
+                      icon: leadingIcon!,
+                      visualDensity: dense ? VisualDensity.compact : VisualDensity.standard,
+                    )
+                  : leadingIcon
+              : null,
+          trailing: trailingIcon,
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              Text(title),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                subtitle ?? "",
+                style: subtitleTextStyle ??
+                    const TextStyle(
+                      fontFamily: 'Poppins',
+                      fontSize: 12,
+                      fontWeight: FontWeight.w200,
+                      color: Colors.white54,
+                    ),
+              ),
+            ],
+          ),
+          tileColor: tileColor,
+          titleTextStyle: titleTextStyle ??
+              const TextStyle(
+                fontFamily: 'Poppins',
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+          textColor: textColor ?? Colors.grey[300],
         ),
-        tileColor: tileColor,
-        titleTextStyle: titleTextStyle ??
-            const TextStyle(
-              fontFamily: 'Poppins',
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-        textColor: textColor ?? Colors.grey[300],
       ),
     );
   }

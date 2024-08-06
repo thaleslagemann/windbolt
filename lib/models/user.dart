@@ -1,45 +1,81 @@
-import 'package:windbolt/models/friend.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:math' as math;
+
+import 'package:uuid/uuid.dart';
+import 'package:windbolt/models/friendship.dart';
 
 class User {
   User({
-    required this.id,
+    String? uuid,
     required this.name,
-  });
+    String? tag,
+    this.friends,
+  })  : uuid = uuid ?? const Uuid().v4(),
+        tag = tag ?? User.generateTag();
 
-  int id;
+  String uuid;
   String name;
-  List<Friendship> friends = [];
+  String tag;
+  List<Friendship>? friends;
 
   setName(String newName) {
     name = newName;
   }
 
-  factory User.fromMap(Map<String, dynamic> map) {
-    return User(id: map['id']?.toInt(), name: map['name'] ?? ('guest-${map['id']}'));
+  static String generateTag() {
+    String tag = "";
+    var rnd = math.Random();
+    for (var i = 0; i < 4; i++) {
+      tag = tag + rnd.nextInt(9).toString();
+    }
+    return tag;
   }
 
-  bool isFriendsWith(int userId) {
-    for (var friend in friends) {
-      if (friend.userId == userId) {
+  Map<String, String?> toMap() {
+    return {
+      'uuid': uuid.toString(),
+      'name': name,
+      'tag': tag,
+      'friends': friends != null ? friends!.fold('', (t, Friendship f) => "$t,${jsonEncode(f.toMap())}") : '',
+    };
+  }
+
+  factory User.fromMap(Map<String, dynamic> map) {
+    return User(
+      uuid: map['uuid'],
+      name: map['name'],
+      tag: map['tag'],
+      friends: map['friends'] != "null" ? List.from(jsonDecode(map['friends'])) : [],
+    );
+  }
+
+  bool isFriendsWith(String userUuid) {
+    if (friends == null) {
+      return false;
+    }
+    for (var friend in friends!) {
+      if (friend.userUuid == userUuid) {
         return true;
       }
     }
     return false;
   }
 
-  removeFriend(int userId) {
+  removeFriend(String userUuid) {
     try {
-      friends.removeAt(friends.indexWhere((friend) => friend.userId == userId));
+      friends?.removeAt(friends!.indexWhere((friend) => friend.userUuid == userUuid));
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 
-  addFriend(int userId) {
+  addFriend(String userUuid) {
     try {
-      friends.add(Friendship(userId: userId));
+      friends ??= [];
+      friends?.add(Friendship(userUuid: userUuid));
     } catch (e) {
-      print(e);
+      log(e.toString());
     }
   }
 }

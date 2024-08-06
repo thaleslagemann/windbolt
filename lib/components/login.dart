@@ -35,6 +35,7 @@ class LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(

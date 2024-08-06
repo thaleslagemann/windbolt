@@ -127,22 +127,27 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                     : ListView.builder(
                         itemCount: chatList.length,
                         itemBuilder: (context, value) {
-                          return CustomListTile(
-                            title: chatList[value].title!,
-                            trailingIcon: chatList[value].type == ChatType.monologue ? const Icon(Icons.person) : const Icon(Icons.group),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChatScreen(
-                                    chat: chatList[value],
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                            child: CustomListTile(
+                              title: chatList[value].title!,
+                              decoration: BoxDecoration(border: Border.all(color: Colors.lightGreen[200]!), borderRadius: BorderRadius.circular(16)),
+                              inkWellBorderRadius: BorderRadius.circular(16),
+                              trailingIcon: chatList[value].type == ChatType.monologue ? const Icon(Icons.person) : const Icon(Icons.group),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                      chat: chatList[value],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                            onLongPress: () {
-                              _openChatOptions(chatList[value]);
-                            },
+                                );
+                              },
+                              onLongPress: () {
+                                _openChatOptions(chatList[value]);
+                              },
+                            ),
                           );
                         }),
                 Positioned(
@@ -174,7 +179,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     double screenSize = MediaQuery.of(context).size.height;
     ChatType newChatType = ChatType.monologue;
     TextEditingController nameController = TextEditingController();
-    List<int> newChatIdList = [globals.user!.id];
+    List<String> newChatIdList = [globals.user!.uuid];
     showModalBottomSheet(
       context: context,
       barrierColor: Colors.transparent,
@@ -258,7 +263,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                         ? Column(
                             children: [
                               const CustomText("Select friends:"),
-                              globals.user!.friends.isEmpty
+                              globals.user!.friends!.isEmpty
                                   ? Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: CustomText(
@@ -272,12 +277,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                                       child: ListView(
                                         shrinkWrap: true,
                                         children: [
-                                          for (User user in globals.users.where((u) => globals.user!.isFriendsWith(u.id)))
+                                          for (User user in globals.users.where((u) => globals.user!.isFriendsWith(u.uuid)))
                                             CustomListTile(
                                               dense: true,
                                               title: user.name,
-                                              subtitle: "#${formatter.format(user.id)}",
-                                              leadingIcon: newChatIdList.contains(user.id)
+                                              subtitle: "#${user.tag}",
+                                              leadingIcon: newChatIdList.contains(user.uuid)
                                                   ? Icon(
                                                       Icons.check_box,
                                                       color: Colors.lightGreen[200]!,
@@ -288,13 +293,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                                                     ),
                                               isIconButton: true,
                                               onIconButtonPress: () {
-                                                if (newChatIdList.contains(user.id)) {
+                                                if (newChatIdList.contains(user.uuid)) {
                                                   setter(() {
-                                                    newChatIdList.remove(user.id);
+                                                    newChatIdList.remove(user.uuid);
                                                   });
                                                 } else {
                                                   setter(() {
-                                                    newChatIdList.add(user.id);
+                                                    newChatIdList.add(user.uuid);
                                                   });
                                                 }
                                               },
@@ -324,7 +329,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                             Chat(
                               title: nameController.text,
                               type: newChatType,
-                              userIds: newChatIdList,
+                              userUuids: newChatIdList,
                               messages: [],
                             ),
                           );
@@ -387,7 +392,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   _renameChatMBS(Chat chat) {
-    TextEditingController renameController = TextEditingController();
+    TextEditingController renameController = TextEditingController(text: chat.title);
     showModalBottomSheet(
       context: context,
       shape: const LinearBorder(),
@@ -466,16 +471,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                   padding: EdgeInsets.all(16.0),
                   child: CustomText("Chat participants"),
                 ),
-                for (var user in globals.users.where((user) => chat.userIds.contains(user.id)))
+                for (var user in globals.users.where((user) => chat.userUuids.contains(user.uuid)))
                   CustomListTile(
-                    trailingIcon: user.id == globals.users.where((user) => chat.userIds.contains(user.id)).first.id
+                    trailingIcon: user.uuid == globals.users.where((user) => chat.userUuids.contains(user.uuid)).first.uuid
                         ? Icon(
                             Icons.shield,
                             color: Colors.lightGreen[300]!,
                           )
                         : const Icon(Icons.shield_outlined),
                     title: user.name,
-                    subtitle: "#${formatter.format(user.id)}",
+                    subtitle: "#${user.tag}",
                   ),
               ],
             ),
